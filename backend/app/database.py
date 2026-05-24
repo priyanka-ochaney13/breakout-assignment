@@ -5,7 +5,8 @@ from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./breakout-assignment.db")
+
 engine = create_engine(
     DATABASE_URL,
     connect_args={"check_same_thread": False}  if DATABASE_URL.startswith("sqlite") else {},
@@ -31,5 +32,7 @@ def check_db_connection():
         with engine.connect() as connection:
             connection.execute(text("SELECT 1"))
         print("Database connection successful.")
+        return True
     except Exception as e:
         print(f"Database connection failed: {e}")
+        return False

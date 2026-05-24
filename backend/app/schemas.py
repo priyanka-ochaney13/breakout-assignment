@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 
 #enquiry
 class EnquiryCreate(BaseModel):
-    channel: Literal['email', 'call', 'whatsapp'] = Field(None, description="The channel through which the enquiry was made")
+    channel: Literal['email', 'call', 'whatsapp'] = Field(..., description="The channel through which the enquiry was made")
     customer_name: str = Field(..., min_length=1, max_length=255, description="Full name of the customer.")
     message: str = Field(..., min_length=1, description="The content of the enquiry.")
     model_config = {
@@ -24,9 +24,9 @@ class EnquiryCreatedResponse(BaseModel):
     model_config = {
         "json_schema_extra": {
             "example": {
-                job_id: "123e4567-e89b-12d3-a456-426614174000",
-                status: "pending",
-                message: "Enquiry received. Processing in background."
+                "job_id": "123e4567-e89b-12d3-a456-426614174000",
+                "status": "pending",
+                "message": "Enquiry received. Processing in background."
             }
         }
     }
@@ -46,7 +46,7 @@ class FollowUpRequest(BaseModel):
 
 class FollowUpResponse(BaseModel):
     enquiry_id: str
-    scheduled_time: datetime
+    scheduled_in_minutes: int
     message: str
     model_config = {
         "json_schema_extra": {

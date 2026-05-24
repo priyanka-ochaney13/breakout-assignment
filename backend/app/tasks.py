@@ -97,7 +97,7 @@ def process_enquiry(enquiry_id: str):
     except Exception as e:
         logger.error(
             "process_enquiry failed",
-            extra={"enquiry_id": enquiry_id, "error": str(exc)},
+            extra={"enquiry_id": enquiry_id, "error": str(e)},
         )
         db.rollback()
     finally:

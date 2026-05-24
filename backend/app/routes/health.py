@@ -6,7 +6,7 @@ from app.schemas import HealthResponse
 router = APIRouter(tags=["Health"], prefix="/health")
 
 @router.get(
-    "/health",
+    "",
     response_model=HealthResponse,
     summary="api health check",
     description="returns api status and database connection status",

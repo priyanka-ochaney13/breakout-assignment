@@ -2,7 +2,7 @@ import logging
 import sys
 from pythonjsonlogger.jsonlogger import JsonFormatter
 
-def get_logger(name: str) -> logging.logger:
+def get_logger(name: str) -> logging.Logger:
     logger = logging.getLogger(name)
 
     if not logger.handlers:
