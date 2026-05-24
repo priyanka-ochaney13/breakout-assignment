@@ -2,6 +2,8 @@ import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from app.logger import get_logger
+_logger = get_logger("app.database")
 
 load_dotenv()
 
@@ -25,14 +27,12 @@ def get_db():
         yield db
     finally:
         db.close()
-
+    
 def check_db_connection():
-    #used by the /health endpoint to verify DB connectivity
     try:
         with engine.connect() as connection:
             connection.execute(text("SELECT 1"))
-        print("Database connection successful.")
         return True
     except Exception as e:
-        print(f"Database connection failed: {e}")
+        _logger.error("Database health check failed", extra={"error": str(e)})
         return False

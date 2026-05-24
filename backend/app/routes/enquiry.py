@@ -30,16 +30,14 @@ def create_enquiry(
         status="pending",
     )
     db.add(enquiry)
-    db.commit()
-    db.refresh(enquiry)
-
-    #log creation event
+    db.flush()  # assigns the ID without committing
     db.add(EnquiryEvent(
         enquiry_id=enquiry.id,
         event_type="enquiry_created",
         detail=f"Received via {payload.channel} from {payload.customer_name}.",
     ))
     db.commit()
+    db.refresh(enquiry)
 
     logger.info(
         "Enquiry created",
@@ -80,7 +78,7 @@ def schedule_follow_up(
     template_note = (
         f"Template: '{payload.message_template}'" if payload.message_template else "No template provided"
     )
-    detail = f"Follow-up scheduled in {payload.delay_minutes} minute(s).{template_note}"
+    detail = f"Follow-up scheduled in {payload.delay_minutes} minute(s). {template_note}"
     
     db.add(EnquiryEvent(
         enquiry_id=enquiry_id,

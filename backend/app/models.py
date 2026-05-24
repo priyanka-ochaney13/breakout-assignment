@@ -15,14 +15,13 @@ class Enquiry(Base):
 
     id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
     tenant_id: Mapped[str | None] = mapped_column(String, nullable=True, index=True)
-
     #inbound data
     channel: Mapped[str] = mapped_column(String(20))
     customer_name: Mapped[str] = mapped_column(String(255))
     message: Mapped[str] = mapped_column(Text)
     
     #processed by background task
-    status: Mapped[str] = mapped_column(String(30), default="pending")
+    status: Mapped[str] = mapped_column(String(30), default="pending", index=True)
     #pending, processing, closed, escalated
     matched_sop: Mapped[str | None] = mapped_column(String(100), nullable=True)
     suggested_response: Mapped[str | None] = mapped_column(Text, nullable=True)

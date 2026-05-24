@@ -11,11 +11,10 @@ logger = get_logger("app.main")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     #create tables on startup
-    Base.metadata.create_all(bind=engine)
-    logger.info("Database tables initialised", extra={"event": "startup"})
+    logger.info("Application starting", extra={"event": "startup"})
     yield
     logger.info("Application shutting down", extra={"event": "shutdown"})
-
+    
 app = FastAPI(
     title="Closira Enquiry API",
     description="API for receiving and processing customer enquiries asynchronously.",

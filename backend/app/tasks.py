@@ -65,7 +65,14 @@ def process_enquiry(enquiry_id: str):
         db.commit()
         _add_event(db, enquiry_id, "task_started", "SOP matching started")
 
-        logger.info(f"SOP matching {enquiry_id}: '{enquiry.message}', enquiry.channel='{enquiry.channel}'")
+        logger.info(
+            "SOP matching started",
+            extra={
+                "enquiry_id": enquiry_id,
+                "message_preview": enquiry.message[:100],
+                "channel": enquiry.channel,
+            },
+        )
 
         matched = _match_sop(enquiry.message)
 
@@ -89,10 +96,10 @@ def process_enquiry(enquiry_id: str):
             enquiry.escalation_reason = "No SOP matched the inbound message. Flagged for human review."
             db.commit()
 
-            _add_event(db, enquiry_id, "escalated", "No SOP matched. Escalated for human review.")
+            _add_event(db, enquiry_id, "auto_escalated", "No SOP matched. Auto-escalated for human review.")
 
             logger.warning("No SOP matched — auto-escalated",
-                extra={"enquiry_id": enquiry_id, "event": "escalation_triggered"},)
+                extra={"enquiry_id": enquiry_id, "event": "auto_escalated"},)
         
     except Exception as e:
         logger.error(

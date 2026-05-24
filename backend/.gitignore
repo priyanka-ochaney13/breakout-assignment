@@ -1,8 +1,33 @@
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
-.env
+
+# Virtual environment
 venv/
-breakout-assignment.db
+
+# Environment variables
+.env
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Alembic
+alembic/versions/*.pyc
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
